@@ -1,29 +1,30 @@
-import React from 'react';
-import { useRete } from 'rete-react-plugin';
-import logo from './logo.svg';
-import './App.css';
-import './rete.css';
-import { createEditor } from './rete';
+import { createEditor } from "./editor";
+import { useRete } from "rete-react-plugin";
+import styled from "styled-components";
+import { Button, Switch } from "antd";
+import { useState } from "react";
 
-function App() {
-  const [ref] = useRete(createEditor)
+const LayoutAction = styled.div`
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+`;
+
+export default function App() {
+  const [ref,editor] = useRete(createEditor);
+  const [animate, setAnimate] = useState(true);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" style={{ animation: 'none' }} />
-        <a
-          className="App-link"
-          href="https://rete.js.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Rete.js
-        </a>
-        <div ref={ref} className="rete"></div>
-      </header>
+      <LayoutAction>
+        Animate
+        <Switch checked={animate} onChange={setAnimate} />
+        <Button onClick={() => editor?.layout(animate)}>Layout</Button>
+      </LayoutAction>
+      <div ref={ref} style={{ height: "100vh", width: "100vw" }}></div>
     </div>
   );
 }
-
-export default App
